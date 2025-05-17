@@ -1,2 +1,11 @@
 streamlit
 google-generativeai
+gtts
+SpeechRecognition
+pydub
+numpy
+pandas
+matplotlib
+reportlab
+Pillow
+python-dotenv
