@@ -2,52 +2,54 @@
 import streamlit as st
 import google.generativeai as genai
 
-# --- App Setup ---
-st.set_page_config(page_title="DreamScope: AI Dream Interpreter", layout="centered")
-st.title("🌙 DreamScope – AI Dream Interpreter")
-
+# --- App Config ---
+st.set_page_config(page_title="DreamyBot – Your Dream Interpreter", layout="centered")
+st.title("🌙 DreamyBot")
 st.markdown("""
-Describe your dream, and let Gemini interpret its possible meanings, emotions, and symbols.
+Hi, I'm **DreamyBot** ✨  
+Share your dream with me, and I’ll help interpret its symbols and emotions.
+
+> 📝 *Tip: Include your age and gender for deeper insights!*
 """)
 
-# --- Sidebar ---
+# --- Sidebar API Key ---
 st.sidebar.title("🔐 Gemini API Key")
 api_key = st.sidebar.text_input("Enter your Gemini API Key", type="password")
 
-visualize = st.sidebar.checkbox("🖼️ Generate Dream Visual (coming soon)", value=False)
-
-# --- Main Logic ---
 if api_key:
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel("models/gemini-1.5-flash-latest")
 
-    dream = st.text_area("🛌 Describe Your Dream", placeholder="I was flying through a forest chased by a shadow...", height=200)
+    # --- User Inputs ---
+    age = st.text_input("🧑‍🎓 Your Age", placeholder="e.g. 19")
+    gender = st.selectbox("🚻 Your Gender", ["Select", "Male", "Female", "Other"])
+    dream = st.text_area("💭 Describe Your Dream", placeholder="e.g. A princess was holding my hand, but her face was blank...", height=200)
 
-    if st.button("Interpret Dream") and dream.strip():
-        with st.spinner("Analyzing your dream with AI 🧠..."):
-            prompt = f"""
-You are an expert dream analyst.
+    if st.button("Interpret My Dream"):
+        if not dream.strip():
+            st.warning("Please describe your dream.")
+        else:
+            with st.spinner("DreamyBot is thinking... ✨"):
+                prompt = f"""
+You are DreamyBot, an insightful AI dream analyst. Use Jungian and symbolic psychology to analyze the following dream.
 
-Interpret the following dream:
+Respond empathetically, almost like a therapist — explore archetypes, emotions, and themes. Use a warm, intuitive tone.
+
+Dreamer details:
+- Age: {age if age else 'unknown'}
+- Gender: {gender if gender != 'Select' else 'unspecified'}
+
+Dream:
 \"\"\"{dream}\"\"\"
 
 Provide:
-1. A symbolic and psychological interpretation
-2. The dominant emotions in the dream
-3. Possible meanings or real-life connections
-4. Archetypes or recurring dream motifs (e.g. flying, falling, shadows)
-
-Be insightful yet imaginative.
+1. A symbolic interpretation
+2. Emotional themes
+3. Reflections the user might consider
 """
 
-            response = model.generate_content(prompt)
-            st.subheader("🌌 Dream Interpretation")
-            st.markdown(response.text)
-
-        if visualize:
-            st.info("🔧 Dream visualization coming soon! (Image API placeholder)")
-    else:
-        st.info("Enter a dream and click interpret.")
+                response = model.generate_content(prompt)
+                st.markdown("### 🧠 DreamyBot:")
+                st.markdown(response.text)
 else:
-    st.warning("Please input your Gemini API key in the sidebar.")
-
+    st.warning("Please enter your Gemini API key in the sidebar.")
