@@ -16,6 +16,8 @@ from io import BytesIO
 # Must be FIRST Streamlit command
 st.set_page_config(page_title="DreamsWhisperer", layout="centered", page_icon="🌒")
 
+with st.sidebar:
+    st.image("dream1.jpg", caption="🌌 Dream Portal", use_column_width=True)
 
 
 # Optional: Add a toggle in the sidebar to enable/disable background music
