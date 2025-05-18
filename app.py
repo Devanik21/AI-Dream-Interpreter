@@ -17,7 +17,7 @@ from io import BytesIO
 st.set_page_config(page_title="DreamsWhisperer", layout="centered", page_icon="🌒")
 
 with st.sidebar:
-    st.image("dream1.jpg", caption="🌌 Dream Portal", use_container_width=True)
+    st.image("dream1.jpg", caption="🪞 Astral Mirror", use_container_width=True)
 
 
 
@@ -1079,6 +1079,6 @@ else:
 
 
 with st.sidebar:
-    st.image("dream3.jpg", caption="🌌 Dream Portal", use_container_width=True)
+    st.image("dream3.jpg", caption="🧿 Eye of the Inner Realms", use_container_width=True)
 
-st.image("dream2.jpg" ,use_container_width=True)
+st.image("dream2.jpg" ,caption="🕯️ Gateway to the Void",use_container_width=True)
