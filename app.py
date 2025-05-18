@@ -1078,6 +1078,7 @@ else:
 
 
 
-
+with st.sidebar:
+    st.image("dream3.jpg", caption="🌌 Dream Portal", use_container_width=True)
 
 st.image("dream2.jpg" ,use_container_width=True)
