@@ -5,7 +5,7 @@ import os
 import uuid
 
 # Must be FIRST Streamlit command
-st.set_page_config(page_title="🌑 DreamsWhisperer", layout="centered", page_icon="🌌")
+st.set_page_config(page_title="DreamsWhisperer", layout="centered", page_icon="🌒")
 
 # --- Advanced Dreamscape CSS ---
 st.markdown("""
