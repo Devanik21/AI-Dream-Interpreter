@@ -19,13 +19,15 @@ st.set_page_config(page_title="DreamsWhisperer", layout="centered", page_icon="ð
 
 
 # Optional: Add a toggle in the sidebar to enable/disable background music
+# In Sidebar
 with st.sidebar:
     st.markdown("## ðŸŽ¼ Dream Soundscape")
     play_music = st.checkbox("Enable ambient music", value=True)
 
-# Add this somewhere after st.set_page_config (top of your main code)
-if 'play_music' in locals() and play_music:
-    st.audio("inner_peace.mp3", format="audio/mp3", start_time=0)
+# Near the top of the app, after st.set_page_config and CSS
+if play_music:
+    st.audio("assets/mystic_dreamscape_loop.mp3", format="audio/mp3")
+
 
 
 # --- Load the CSS from the original app ---
