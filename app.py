@@ -136,7 +136,7 @@ Dreamer Info:
 - Gender: {gender if gender != 'Select' else 'Unspecified'}
 
 Dream:
-"""{dream}"""
+\"\"\"{dream}\"\"\"
 
 Respond like a poetic, wise oracle. Include:
 1. Symbolic meaning and archetypes 🌌
