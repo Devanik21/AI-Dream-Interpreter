@@ -16,6 +16,18 @@ from io import BytesIO
 # Must be FIRST Streamlit command
 st.set_page_config(page_title="DreamsWhisperer", layout="centered", page_icon="🌒")
 
+
+
+# Optional: Add a toggle in the sidebar to enable/disable background music
+with st.sidebar:
+    st.markdown("## 🎼 Dream Soundscape")
+    play_music = st.checkbox("Enable ambient music", value=True)
+
+# Add this somewhere after st.set_page_config (top of your main code)
+if 'play_music' in locals() and play_music:
+    st.audio("inner_peace.mp3", format="audio/mp3", start_time=0)
+
+
 # --- Load the CSS from the original app ---
 st.markdown("""
 <style>
