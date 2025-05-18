@@ -79,14 +79,24 @@ a {
 st.title("🔮🌙 DreamyBot: Mystic Interpreter of Dreams")
 
 st.markdown("""
-<div class='dream-box'>
-Welcome, seeker of secrets... 🕯️✨  
-I am **DreamyBot**, your guide through the shadowy landscapes of dreams.  
-Whisper your vision to me, and I shall reveal the hidden meanings that stir beneath.  
+<div style='
+    background: linear-gradient(145deg, #1a082f, #0d001f, #1e0a33);
+    padding: 1.5rem;
+    border-radius: 18px;
+    box-shadow: 0 0 25px #5e2e91;
+    border: 1px solid #7b42c7;
+    color: #f0dfff;
+    font-size: 1.05rem;
+    line-height: 1.7;
+'>
+🕯️✨ <b>Welcome, seeker of secrets...</b><br><br>
+I am <b>DreamyBot</b>, your guide through the shadowy landscapes of dreams.<br>
+Whisper your vision to me, and I shall reveal the hidden meanings that stir beneath.
 <br><br>
-> 🦋 *For deeper insight, share your age and identity~*
+<span style="color:#cda4ff;">🦋 <i>For deeper insight, share your age and identity~</i></span>
 </div>
 """, unsafe_allow_html=True)
+
 
 # --- Sidebar: Gemini API Key ---
 st.sidebar.markdown("## 🧿 Connect to the Dream Realm")
