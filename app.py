@@ -21,8 +21,8 @@ with st.sidebar:
 
 
 
-st.image("dream2.jpg", caption="🌌 Dream Portal", use_column_width=True)
-st.image("dream3.jpg", caption="🌌 Dream Portal", use_column_width=True)
+st.image("dream2.jpg" ,use_container_width=True)
+st.image("dream3.jpg",use_container_width=True)
 # Optional: Add a toggle in the sidebar to enable/disable background music
 # In Sidebar
 with st.sidebar:
