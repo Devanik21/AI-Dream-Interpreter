@@ -5,41 +5,57 @@ import os
 import uuid
 import time
 
+# Must be FIRST Streamlit command
+st.set_page_config(page_title="🌙 DreamyBot – Dream Interpreter", layout="centered", page_icon="🔮")
 
-st.set_page_config(page_title="🌙 DreamyBot – Dream Interpreter", layout="centered", page_icon="💤")
-# --- Dreamy CSS ---
+# --- Dark Mystical CSS ---
 st.markdown("""
 <style>
 body {
-    background-color: #f5f3ff;
-    color: #4b0082;
-    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background-color: #0d001f;
+    color: #dcd2ff;
+    font-family: 'Georgia', serif;
 }
 
-h1 {
-    color: #8e44ad;
-    text-align: center;
+h1, h2, h3 {
+    color: #f3e5ff;
+    text-shadow: 1px 1px 4px #9c27b0;
 }
 
 textarea, input, select {
-    background-color: #ffffffdd !important;
+    background-color: #1a082f !important;
+    color: #f0dfff !important;
+    border: 1px solid #5e2e91 !important;
     border-radius: 10px !important;
 }
 
-.block-container {
-    padding: 2rem;
+.stButton button {
+    background-color: #5e2e91 !important;
+    color: #fff !important;
+    border-radius: 12px;
+    padding: 0.6em 1.2em;
+    border: none;
+    box-shadow: 0 0 10px #ab47bc;
+    transition: 0.3s ease;
+}
+
+.stButton button:hover {
+    background-color: #7b42c7 !important;
+    box-shadow: 0 0 15px #ce93d8;
 }
 
 .dream-box {
-    background: linear-gradient(145deg, #e0c3fc, #8ec5fc);
+    background: linear-gradient(145deg, #2b1a45, #1b0c2e);
     padding: 1.5rem;
     border-radius: 20px;
-    box-shadow: 0 0 10px #d3bfff;
+    box-shadow: 0 0 20px #37005f;
+    margin-bottom: 1rem;
+    color: #e5d0ff;
 }
 
 .spinner {
     font-size: 1.2em;
-    color: #7f00ff;
+    color: #bb86fc;
     animation: blink 1.2s infinite;
 }
 
@@ -48,28 +64,34 @@ textarea, input, select {
   50%  { opacity: 1.0; }
   100% { opacity: 0.2; }
 }
+
+hr {
+    border: 1px solid #37005f;
+}
+
+a {
+    color: #d4a1ff;
+}
 </style>
 """, unsafe_allow_html=True)
 
-# --- App Config ---
-
-st.title("💤🌙 **DreamyBot** – Your Magical Dream Interpreter ✨")
+# --- Title ---
+st.title("🔮🌙 DreamyBot: Mystic Interpreter of Dreams")
 
 st.markdown("""
 <div class='dream-box'>
-Hi sweet soul~ I’m **DreamyBot** 🧚‍♀️  
-Tell me your dream, and I’ll uncover the hidden meanings within it.  
-I'll look deep into your subconscious with love and symbolic wisdom. 🌌💖
-
-> 📝 *Include your age and gender for more intuitive reflections!*
+Welcome, seeker of secrets... 🕯️✨  
+I am **DreamyBot**, your guide through the shadowy landscapes of dreams.  
+Whisper your vision to me, and I shall reveal the hidden meanings that stir beneath.  
+<br><br>
+> 🦋 *For deeper insight, share your age and identity~*
 </div>
 """, unsafe_allow_html=True)
 
-# --- Sidebar for API Key ---
-st.sidebar.markdown("## 🔐 Gemini API Key")
-api_key = st.sidebar.text_input("Enter your Gemini API Key", type="password")
+# --- Sidebar: Gemini API Key ---
+st.sidebar.markdown("## 🧿 Connect to the Dream Realm")
+api_key = st.sidebar.text_input("🔐 Enter your Gemini API Key", type="password")
 
-# --- Dream Log ---
 if "dream_log" not in st.session_state:
     st.session_state.dream_log = []
 
@@ -77,39 +99,38 @@ if api_key:
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel("models/gemini-1.5-flash-latest")
 
-    with st.container():
-        st.markdown("### 🧸 Dream Details")
-        age = st.text_input("🧑‍🎓 Your Age", placeholder="e.g. 19")
-        if age and not age.isdigit():
-            st.warning("Please enter a valid numeric age.")
-            st.stop()
-        gender = st.selectbox("🚻 Your Gender", ["Select", "Male", "Female", "Other"])
-        dream = st.text_area("💭 What did you dream?", placeholder="e.g. A glowing doorway appeared in the sky...", height=180)
+    st.markdown("## 🌌 Your Dream")
+    age = st.text_input("🎭 Your Age", placeholder="e.g. 21")
+    if age and not age.isdigit():
+        st.warning("🌑 Age must be numeric.")
+        st.stop()
 
-    if st.button("🔮 Interpret My Dream"):
+    gender = st.selectbox("🌗 Your Gender Identity", ["Select", "Male", "Female", "Other"])
+    dream = st.text_area("🌒 Tell Me Your Dream...", placeholder="e.g. I walked through a forest of mirrors under a violet sky...", height=180)
+
+    if st.button("🔍 Reveal the Meaning"):
         if not dream.strip():
-            st.warning("Please describe your dream.")
+            st.warning("🌘 Describe your dream to unlock its secrets.")
         else:
-            with st.spinner("✨ DreamyBot is gazing into the stars..."):
-                st.markdown("<p class='spinner'>🌟✨ Looking through dreamdust...</p>", unsafe_allow_html=True)
+            with st.spinner("🔮 Gazing into the dreammist..."):
+                st.markdown("<p class='spinner'>🌟✨ Peering into your subconscious...</p>", unsafe_allow_html=True)
 
                 prompt = f"""
-You are DreamyBot, a magical AI dream analyst who speaks with empathy and mystical insight.
-Analyze this dream using Jungian and symbolic psychology.
+You are DreamyBot, an intuitive and mysterious dream interpreter. Use Jungian archetypes and emotional symbolism to analyze the dream deeply.
 
-Dreamer:
-- Age: {age if age else 'unknown'}
-- Gender: {gender if gender != 'Select' else 'unspecified'}
+Dreamer Info:
+- Age: {age if age else 'Unknown'}
+- Gender: {gender if gender != 'Select' else 'Unspecified'}
 
 Dream:
 \"\"\"{dream}\"\"\"
 
-Provide:
-1. A symbolic interpretation 🧠
-2. Emotional themes 💞
-3. Reflections or life insights 🔮
+Respond like a poetic, wise oracle. Include:
+1. Symbolic meaning and archetypes 🌌
+2. Emotional undertones 🌊
+3. Spiritual or personal reflections 🔮
 
-Tone: nurturing, poetic, intuitive, mystical.
+Tone: dark, poetic, mystical, wise.
 """
 
                 response = model.generate_content(prompt)
@@ -117,38 +138,32 @@ Tone: nurturing, poetic, intuitive, mystical.
 
                 st.session_state.dream_log.append((dream, interpretation))
 
-                st.markdown("### 🧠 DreamyBot Whispers:")
+                st.markdown("### 🌠 DreamyBot’s Reflection")
                 st.markdown(f"<div class='dream-box'>{interpretation}</div>", unsafe_allow_html=True)
 
-                # --- Text to Speech ---
+                # Audio
                 tts = gTTS(interpretation)
-                audio_file = f"dream_audio_{uuid.uuid4()}.mp3"
-                tts.save(audio_file)
+                audio_path = f"dream_audio_{uuid.uuid4()}.mp3"
+                tts.save(audio_path)
+                st.audio(audio_path, format="audio/mp3")
+                st.download_button("🎧 Download Audio", open(audio_path, "rb"), file_name="dream_interpretation.mp3")
+                os.remove(audio_path)
 
-                st.audio(audio_file, format="audio/mp3")
-                st.download_button("🔊 Download Interpretation Audio", data=open(audio_file, "rb"), file_name="dream_interpretation.mp3")
-                time.sleep(1)
-                os.remove(audio_file)
+                # Download Text
+                st.download_button("📜 Download Text", data=interpretation, file_name="dream_interpretation.txt")
 
-                st.download_button("📝 Save as Text", data=interpretation, file_name="dream_interpretation.txt")
-
-    # --- Dream Journal ---
+    # Dream Journal
     if st.session_state.dream_log:
-        st.markdown("### 📖 Your Dream Journal (This Session)")
+        st.markdown("## 📓 Your Shadow Journal")
         for idx, (d, interp) in enumerate(reversed(st.session_state.dream_log), 1):
-            with st.expander(f"🌠 Dream #{len(st.session_state.dream_log) - idx + 1}"):
-                st.markdown(f"**💭 Dream:**\n{d}")
-                st.markdown(f"**🔮 Interpretation:**\n{interp}")
+            with st.expander(f"🌙 Dream #{len(st.session_state.dream_log) - idx + 1}"):
+                st.markdown(f"<div class='dream-box'><b>🌘 Dream:</b><br>{d}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div class='dream-box'><b>🔮 Interpretation:</b><br>{interp}</div>", unsafe_allow_html=True)
 
-        # Full Journal Download
-        full_log = "\n\n---\n\n".join(
+        full_journal = "\n\n---\n\n".join(
             [f"Dream:\n{d}\n\nInterpretation:\n{i}" for d, i in st.session_state.dream_log]
         )
-        st.download_button("📘 Download Full Dream Journal", data=full_log, file_name="dream_journal.txt")
-
-    else:
-        st.info("📝 No dreams yet~ your magical journal will appear here 🌙")
+        st.download_button("🗝️ Download Full Dream Journal", data=full_journal, file_name="full_dream_journal.txt")
 
 else:
-    st.warning("🌟 Please enter your Gemini API key in the sidebar to begin your dreamy journey.")
-
+    st.warning("🧿 To enter the dream realm, please provide your Gemini API key.")
