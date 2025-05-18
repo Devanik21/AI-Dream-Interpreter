@@ -5,60 +5,62 @@ import os
 import uuid
 
 # Must be FIRST Streamlit command
-st.set_page_config(page_title="✨ DreamsWhisperer", layout="centered", page_icon="🔮")
+st.set_page_config(page_title="🌑 DreamsWhisperer", layout="centered", page_icon="🌌")
 
-# --- Enchanted Dreamscape CSS ---
+# --- Advanced Dreamscape CSS ---
 st.markdown("""
 <style>
 body {
-    background: linear-gradient(135deg, #0a001a 0%, #16062d 50%, #1f0a40 100%);
-    color: #e0c5ff;
+    background: linear-gradient(125deg, #050013 0%, #0d0221 40%, #120429 100%);
+    color: #9a71c1;
     font-family: 'Georgia', serif;
     background-attachment: fixed;
 }
 
 h1, h2, h3 {
-    background: linear-gradient(90deg, #c18fff, #f0c7ff, #a59aff);
+    background: linear-gradient(90deg, #503080, #7348aa, #43256b);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    text-shadow: 0px 0px 10px rgba(186, 104, 255, 0.5);
+    text-shadow: 0px 2px 15px rgba(82, 45, 128, 0.7);
 }
 
 textarea, input, select {
-    background: linear-gradient(145deg, #150428, #1d063a) !important;
-    color: #f0dfff !important;
-    border: 1px solid #743fbd !important;
+    background: linear-gradient(145deg, #0c021b, #13032c) !important;
+    color: #9a71c1 !important;
+    border: 1px solid #381a5c !important;
     border-radius: 12px !important;
-    box-shadow: inset 0 0 8px #4a0080 !important;
+    box-shadow: inset 0 0 12px #22083b !important;
+    backdrop-filter: blur(5px) !important;
 }
 
 .stButton button {
-    background: linear-gradient(90deg, #7e3db9, #9942e5) !important;
-    color: #fff !important;
+    background: linear-gradient(90deg, #341855, #502680) !important;
+    color: #9a71c1 !important;
     border-radius: 15px;
     padding: 0.7em 1.4em;
     border: none;
-    box-shadow: 0 0 15px #9152e0, 0 0 5px #ffffff60 inset;
+    box-shadow: 0 0 15px #2a0e45, 0 0 5px #3a1454 inset;
     transition: all 0.4s ease;
 }
 
 .stButton button:hover {
-    background: linear-gradient(90deg, #9942e5, #be7aff) !important;
-    box-shadow: 0 0 20px #d193ff;
+    background: linear-gradient(90deg, #43256b, #561d8f) !important;
+    box-shadow: 0 0 20px #43256b;
     transform: scale(1.05) translateY(-2px);
 }
 
 .dream-box {
-    background: linear-gradient(145deg, #2b1a45, #1b0c2e);
+    background: linear-gradient(145deg, #140827, #0c041a);
     padding: 1.8rem;
     border-radius: 20px;
-    box-shadow: 0 0 25px #37005f;
+    box-shadow: 0 0 25px #1a052e;
     margin-bottom: 1.5rem;
-    color: #e5d0ff;
-    border: 1px solid #743fbd40;
+    color: #886aab;
+    border: 1px solid #321456;
     position: relative;
     overflow: hidden;
+    backdrop-filter: blur(5px);
 }
 
 .dream-box::before {
@@ -68,48 +70,48 @@ textarea, input, select {
     left: -10px;
     right: -10px;
     bottom: -10px;
-    background: linear-gradient(45deg, #7e3db930, #be7aff30, #2b1a4500);
+    background: linear-gradient(45deg, #25083d30, #43125230, #13031d00);
     z-index: -1;
     filter: blur(20px);
-    animation: aurora 8s infinite alternate;
+    animation: aurora 12s infinite alternate;
 }
 
 @keyframes aurora {
-    0% { transform: translateX(-10%) translateY(10%) rotate(0deg); opacity: 0.7; }
-    50% { opacity: 0.3; }
-    100% { transform: translateX(10%) translateY(-10%) rotate(180deg); opacity: 0.7; }
+    0% { transform: translateX(-10%) translateY(10%) rotate(0deg); opacity: 0.5; }
+    50% { opacity: 0.2; }
+    100% { transform: translateX(10%) translateY(-10%) rotate(180deg); opacity: 0.5; }
 }
 
 .spinner {
     font-size: 1.5em;
-    color: #bb86fc;
-    animation: pulse 1.2s infinite;
+    color: #6c4298;
+    animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 0.8; }
-    50% { transform: scale(1.1); opacity: 1; }
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.1); opacity: 0.9; }
 }
 
 hr {
-    background: linear-gradient(90deg, #18042900, #743fbd50, #18042900);
+    background: linear-gradient(90deg, #0c021b00, #321456, #0c021b00);
     height: 2px;
     border: none;
 }
 
 a {
-    color: #d4a1ff;
+    color: #7348aa;
     text-decoration: none;
-    transition: all 0.3s;
+    transition: all 0.4s;
 }
 
 a:hover {
-    color: #f0c7ff;
-    text-shadow: 0 0 5px #a59aff;
+    color: #9a71c1;
+    text-shadow: 0 0 8px #22083b;
 }
 
-/* Stars animation */
-.stars {
+/* Cosmic animations */
+.cosmos {
     position: fixed;
     top: 0;
     left: 0;
@@ -117,19 +119,51 @@ a:hover {
     height: 100%;
     pointer-events: none;
     z-index: -1;
+    overflow: hidden;
 }
 
 .star {
     position: absolute;
-    background: white;
     border-radius: 50%;
     animation: twinkle var(--duration) infinite;
     opacity: 0;
+    background: radial-gradient(circle at center, var(--color) 0%, transparent 70%);
+}
+
+.nebula {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.04;
+    animation: drift var(--drift-duration) infinite alternate ease-in-out;
+}
+
+.shooting-star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #43256b, transparent);
+    filter: blur(1px);
+    animation: shoot 4s linear infinite;
+    opacity: 0;
+    transform: rotate(var(--angle));
 }
 
 @keyframes twinkle {
     0% { opacity: 0; }
     50% { opacity: var(--opacity); }
+    100% { opacity: 0; }
+}
+
+@keyframes drift {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(var(--drift-x), var(--drift-y)); }
+}
+
+@keyframes shoot {
+    0% { transform: translateX(-100px) rotate(var(--angle)); opacity: 0; }
+    5% { opacity: var(--opacity); }
+    20% { transform: translateX(calc(100vw + 100px)) rotate(var(--angle)); opacity: 0; }
     100% { opacity: 0; }
 }
 </style>
@@ -191,7 +225,7 @@ Share your nocturnal vision, and I shall unveil the sacred symbols hidden within
 """, unsafe_allow_html=True)
 
 # --- Sidebar: Gemini API Key ---
-st.sidebar.markdown("## 🌠 Connect to the Ethereal Realm")
+st.sidebar.markdown("## 🌑 Access the Void")
 api_key = st.sidebar.text_input("🔮 Enter your Gemini API Key", type="password")
 
 if "dream_log" not in st.session_state:
@@ -199,42 +233,73 @@ if "dream_log" not in st.session_state:
 
 if api_key:
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel("models/gemini-1.5-flash-latest")
+    model = genai.GenerativeModel("models/gemini-2.0-flash")
 
-    st.markdown("## 🌌 Your Ethereal Vision")
-    age = st.text_input("🌟 Your Age", placeholder="e.g. 21")
+    st.markdown("## 🪐 Your Shadow Vision")
+    age = st.text_input("🌒 Your Age", placeholder="e.g. 21")
     if age and not age.isdigit():
         st.warning("⚠️ Age must be numeric.")
         st.stop()
 
-    gender = st.selectbox("🌈 Your Essence Identity", ["Select", "Male", "Female", "Non-binary", "Fluid", "Other"])
-    dream = st.text_area("💫 Reveal Your Dream Vision...", 
-                         placeholder="e.g. I floated through a cathedral of crystal flowers while cosmic whispers echoed...", 
-                         height=180)
+    gender = st.selectbox("🌌 Your Inner Nature", ["Select", "Masculine", "Feminine", "Non-binary", "Void", "Fluid", "Other"])
+    
+    dream_container = st.container()
+    with dream_container:
+        st.markdown("""
+        <div style="
+            background: linear-gradient(145deg, #0a0217, #060110);
+            border: 1px solid #25083d;
+            border-radius: 12px;
+            padding: 10px;
+            margin-bottom: 10px;
+        ">
+        <p style="color: #6c4298; margin-bottom: 5px;">🪞 Reveal Your Subconscious Shadows...</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    dream = st.text_area("", 
+                       placeholder="e.g. I descended an endless staircase as shadowy figures watched from doorways that opened into nothing...", 
+                       height=180, key="dream_input")
 
-    if st.button("🔮 Unveil the Mystic Meaning"):
+    col1, col2, col3 = st.columns([1,2,1])
+    with col2:
+        interpret_btn = st.button("🔮 Pierce the Veil")
+
+    if interpret_btn:
         if not dream.strip():
-            st.warning("🌘 Paint your dream vision to unlock its secrets.")
+            st.markdown("""
+            <div style="
+                background: linear-gradient(145deg, #0a0217, #130525);
+                border: 1px solid #25083d;
+                border-radius: 12px;
+                padding: 15px;
+                color: #503080;
+                text-align: center;
+                box-shadow: 0 0 15px #0c041a inset;
+            ">
+            ⚠️ Manifest your nightmare visions to unlock their secrets.
+            </div>
+            """, unsafe_allow_html=True)
         else:
-            with st.spinner("Reading the astral patterns..."):
-                st.markdown("<p class='spinner'>✨🌠💫 Traversing the veils of your subconscious...</p>", unsafe_allow_html=True)
+            with st.spinner(""):
+                st.markdown("<p class='spinner'>🌑🪐⚫ Traversing the dark corridors of your unconscious...</p>", unsafe_allow_html=True)
 
                 prompt = f"""
-You are DreamsWhisperer, an ethereal and intuitive dream interpreter. Use Jungian archetypes, emotional symbolism, and mystical insights to analyze the dream deeply.
+You are NocturneVisions, a mysterious and cryptic dream interpreter. Use Jungian archetypes, shadow psychology, and occult symbolism to analyze the dream deeply.
 
 Dreamer Info:
 - Age: {age if age else 'Unknown'}
-- Identity: {gender if gender != 'Select' else 'Unspecified'}
+- Nature: {gender if gender != 'Select' else 'Unspecified'}
 
-Dream Vision:
+Nocturnal Vision:
 \"\"\"{dream}\"\"\"
 
-Respond as a mystical, wise oracle with poetic language. Include:
-1. Symbolic meanings and archetypes (universal and personal) 🌌
-2. Emotional resonances and psychological insights 🌊
-3. Spiritual significance and transformative potential 🔮
+Respond as an ancient oracle from the void. Include:
+1. Shadow symbolism and dark archetypes (personal and collective unconscious) 🌑
+2. Psychological undercurrents and repressed elements 🪞
+3. Transformative potential and soul evolution 🌌
 
-Tone: ethereal, poetic, mystical, transcendent, wise.
+Tone: dark, cryptic, profound, mysterious, hypnotic.
 """
 
                 response = model.generate_content(prompt)
@@ -242,38 +307,69 @@ Tone: ethereal, poetic, mystical, transcendent, wise.
 
                 st.session_state.dream_log.append((dream, interpretation))
 
-                st.markdown("### 🌠 Ethereal Insights Revealed")
+                st.markdown("### 🌌 Shadows Interpreted")
                 st.markdown(f"<div class='dream-box'>{interpretation}</div>", unsafe_allow_html=True)
 
-                # Audio
+                # Audio with custom styling
+                st.markdown("""
+                <div style="
+                    background: linear-gradient(145deg, #0a0217, #0c041a);
+                    border: 1px solid #22083b;
+                    border-radius: 12px;
+                    padding: 15px;
+                    margin-top: 10px;
+                    margin-bottom: 20px;
+                ">
+                <p style="color: #503080; margin-bottom: 10px;">🔈 Void Whispers</p>
+                """, unsafe_allow_html=True)
+                
                 tts = gTTS(interpretation)
-                audio_path = f"dream_audio_{uuid.uuid4()}.mp3"
+                audio_path = f"vision_audio_{uuid.uuid4()}.mp3"
                 tts.save(audio_path)
                 st.audio(audio_path, format="audio/mp3")
-                st.download_button("🎵 Download Ethereal Whispers", open(audio_path, "rb"), file_name="dream_whispers.mp3")
+                
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.download_button("🎵 Download Void Whispers", open(audio_path, "rb"), file_name="void_whispers.mp3")
+                with col2:
+                    st.download_button("📜 Download Occult Text", data=interpretation, file_name="shadow_revelation.txt")
+                
+                st.markdown("</div>", unsafe_allow_html=True)
                 os.remove(audio_path)
 
-                # Download Text
-                st.download_button("📜 Download Sacred Text", data=interpretation, file_name="dream_revelation.txt")
-
-    # Dream Journal
+    # Dream Journal with dark styling
     if st.session_state.dream_log:
-        st.markdown("## 📓 Your Astral Chronicles")
+        st.markdown("""
+        <div style="
+            background: linear-gradient(145deg, #0c041a, #0a0217);
+            border: 1px solid #25083d;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        ">
+        <h2 style="color: #503080; margin-bottom: 10px; text-align: center;">📓 Shadow Chronicles</h2>
+        </div>
+        """, unsafe_allow_html=True)
+        
         for idx, (d, interp) in enumerate(reversed(st.session_state.dream_log), 1):
-            with st.expander(f"✨ Vision #{len(st.session_state.dream_log) - idx + 1}"):
-                st.markdown(f"<div class='dream-box'><b>🌙 Dream Vision:</b><br>{d}</div>", unsafe_allow_html=True)
-                st.markdown(f"<div class='dream-box'><b>🔮 Mystic Revelation:</b><br>{interp}</div>", unsafe_allow_html=True)
+            with st.expander(f"🌑 Vision #{len(st.session_state.dream_log) - idx + 1}"):
+                st.markdown(f"<div class='dream-box'><b>🪐 Nightmare Vision:</b><br>{d}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div class='dream-box'><b>🌌 Occult Revelation:</b><br>{interp}</div>", unsafe_allow_html=True)
 
-        full_journal = "\n\n✧･ﾟ: *✧･ﾟ:* *:･ﾟ✧*:･ﾟ✧\n\n".join(
-            [f"Dream Vision:\n{d}\n\nMystic Revelation:\n{i}" for d, i in st.session_state.dream_log]
+        full_journal = "\n\n⚫・☽・⚫・☾・⚫\n\n".join(
+            [f"Nightmare Vision:\n{d}\n\nOccult Revelation:\n{i}" for d, i in st.session_state.dream_log]
         )
-        st.download_button("🌠 Download Complete Astral Chronicles", data=full_journal, file_name="astral_chronicles.txt")
+        
+        col1, col2, col3 = st.columns([1,2,1])
+        with col2:
+            st.download_button("🌑 Download Complete Shadow Chronicles", data=full_journal, file_name="shadow_chronicles.txt")
 
 else:
     st.markdown("""
     <div class='dream-box' style='text-align: center;'>
-    <span style='font-size: 1.3em; color: #a59aff;'>🌙✨</span><br>
-    To begin your journey through the veils of dreams,<br>
-    please provide your Gemini API key.
+    <span style='font-size: 1.3em; color: #503080;'>🌑⚫</span><br>
+    To enter the void between consciousness and dreams,<br>
+    you must provide your Gemini API key.
     </div>
     """, unsafe_allow_html=True)
