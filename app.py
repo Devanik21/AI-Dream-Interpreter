@@ -5,6 +5,8 @@ import os
 import uuid
 import time
 
+
+st.set_page_config(page_title="🌙 DreamyBot – Dream Interpreter", layout="centered", page_icon="💤")
 # --- Dreamy CSS ---
 st.markdown("""
 <style>
@@ -50,7 +52,7 @@ textarea, input, select {
 """, unsafe_allow_html=True)
 
 # --- App Config ---
-st.set_page_config(page_title="🌙 DreamyBot – Dream Interpreter", layout="centered", page_icon="💤")
+
 st.title("💤🌙 **DreamyBot** – Your Magical Dream Interpreter ✨")
 
 st.markdown("""
