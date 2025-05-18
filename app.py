@@ -26,7 +26,7 @@ with st.sidebar:
 
 # Near the top of the app, after st.set_page_config and CSS
 if play_music:
-    st.audio("assets/mystic_dreamscape_loop.mp3", format="audio/mp3")
+    st.audio("inner_peace.mp3", format="audio/mp3")
 
 
 
