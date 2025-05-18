@@ -21,7 +21,7 @@ with st.sidebar:
 
 
 
-st.image("dream3.jpg",use_container_width=True)
+st.image("dream4.jpg",use_container_width=True)
 # Optional: Add a toggle in the sidebar to enable/disable background music
 # In Sidebar
 with st.sidebar:
