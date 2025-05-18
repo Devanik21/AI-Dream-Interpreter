@@ -15,6 +15,9 @@ body {
     background-color: #0d001f;
     color: #dcd2ff;
     font-family: 'Georgia', serif;
+    background-image: linear-gradient(135deg, #0d001f 0%, #1b0c2e 100%);
+    background-attachment: fixed;
+    background-size: cover;
 }
 
 h1, h2, h3 {
@@ -42,6 +45,7 @@ textarea, input, select {
 .stButton button:hover {
     background-color: #7b42c7 !important;
     box-shadow: 0 0 15px #ce93d8;
+    transform: scale(1.05);
 }
 
 .dream-box {
@@ -93,13 +97,12 @@ st.markdown("""
 I am <b>DreamyBot</b>, your guide through the shadowy landscapes of dreams.<br>
 Whisper your vision to me, and I shall reveal the hidden meanings that stir beneath.
 <br><br>
-<span style="color:#cda4ff;">🦋 <i>For deeper insight, share your age and identity~</i></span>
+<span style="color:#cda4ff;">🧙‍♀️ <i>For deeper insight, share your age and identity~</i></span>
 </div>
 """, unsafe_allow_html=True)
 
-
 # --- Sidebar: Gemini API Key ---
-st.sidebar.markdown("## 🧿 Connect to the Dream Realm")
+st.sidebar.markdown("## 🧏 Connect to the Dream Realm")
 api_key = st.sidebar.text_input("🔐 Enter your Gemini API Key", type="password")
 
 if "dream_log" not in st.session_state:
@@ -115,7 +118,7 @@ if api_key:
         st.warning("🌑 Age must be numeric.")
         st.stop()
 
-    gender = st.selectbox("🌗 Your Gender Identity", ["Select", "Male", "Female", "Other"])
+    gender = st.selectbox("🍗 Your Gender Identity", ["Select", "Male", "Female", "Other"])
     dream = st.text_area("🌒 Tell Me Your Dream...", placeholder="e.g. I walked through a forest of mirrors under a violet sky...", height=180)
 
     if st.button("🔍 Reveal the Meaning"):
@@ -133,7 +136,7 @@ Dreamer Info:
 - Gender: {gender if gender != 'Select' else 'Unspecified'}
 
 Dream:
-\"\"\"{dream}\"\"\"
+"""{dream}"""
 
 Respond like a poetic, wise oracle. Include:
 1. Symbolic meaning and archetypes 🌌
@@ -156,7 +159,7 @@ Tone: dark, poetic, mystical, wise.
                 audio_path = f"dream_audio_{uuid.uuid4()}.mp3"
                 tts.save(audio_path)
                 st.audio(audio_path, format="audio/mp3")
-                st.download_button("🎧 Download Audio", open(audio_path, "rb"), file_name="dream_interpretation.mp3")
+                st.download_button("🎟️ Download Audio", open(audio_path, "rb"), file_name="dream_interpretation.mp3")
                 os.remove(audio_path)
 
                 # Download Text
@@ -173,7 +176,7 @@ Tone: dark, poetic, mystical, wise.
         full_journal = "\n\n---\n\n".join(
             [f"Dream:\n{d}\n\nInterpretation:\n{i}" for d, i in st.session_state.dream_log]
         )
-        st.download_button("🗝️ Download Full Dream Journal", data=full_journal, file_name="full_dream_journal.txt")
+        st.download_button("💟 Download Full Dream Journal", data=full_journal, file_name="full_dream_journal.txt")
 
 else:
-    st.warning("🧿 To enter the dream realm, please provide your Gemini API key.")
+    st.warning("🧏 To enter the dream realm, please provide your Gemini API key.")
