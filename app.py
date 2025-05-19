@@ -282,11 +282,7 @@ a:hover {
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-<div class='glow-orb' style='top: 20%; left: 10%; animation-delay: 0s;'></div>
-<div class='glow-orb' style='top: 60%; left: 80%; animation-delay: 2s;'></div>
-<div class='glow-orb' style='top: 40%; left: 50%; animation-delay: 4s;'></div>
-""", unsafe_allow_html=True)
+
 
 
 st.markdown("""
