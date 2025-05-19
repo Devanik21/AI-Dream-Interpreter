@@ -37,6 +37,23 @@ if play_music:
 # --- Load the CSS from the original app ---
 st.markdown("""
 <style>
+
+
+.glow-orb {
+  position: fixed;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1), transparent 70%);
+  width: 120px;
+  height: 120px;
+  animation: pulseGlow 6s ease-in-out infinite;
+  z-index: -2;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.5); opacity: 0.2; }
+}
+
 @keyframes floatStars {
   from { transform: translateY(0); opacity: 0.2; }
   to { transform: translateY(-100vh); opacity: 0; }
@@ -264,6 +281,13 @@ a:hover {
 }
 </style>
 """, unsafe_allow_html=True)
+
+st.markdown("""
+<div class='glow-orb' style='top: 20%; left: 10%; animation-delay: 0s;'></div>
+<div class='glow-orb' style='top: 60%; left: 80%; animation-delay: 2s;'></div>
+<div class='glow-orb' style='top: 40%; left: 50%; animation-delay: 4s;'></div>
+""", unsafe_allow_html=True)
+
 
 st.markdown("""
 <div class='star' style='left: 20%; animation-delay: 0s;'></div>
