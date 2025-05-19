@@ -37,6 +37,19 @@ if play_music:
 # --- Load the CSS from the original app ---
 st.markdown("""
 <style>
+@keyframes floatStars {
+  from { transform: translateY(0); opacity: 0.2; }
+  to { transform: translateY(-100vh); opacity: 0; }
+}
+
+.star {
+  position: fixed;
+  width: 2px;
+  height: 2px;
+  background: #ffffff80;
+  animation: floatStars 10s linear infinite;
+}
+
 body {
     background: linear-gradient(125deg, #050013 0%, #0d0221 40%, #120429 100%);
     color: #9a71c1;
@@ -250,6 +263,13 @@ a:hover {
     margin: 15px 0;
 }
 </style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<div class='star' style='left: 20%; animation-delay: 0s;'></div>
+<div class='star' style='left: 40%; animation-delay: 2s;'></div>
+<div class='star' style='left: 60%; animation-delay: 4s;'></div>
+<div class='star' style='left: 80%; animation-delay: 6s;'></div>
 """, unsafe_allow_html=True)
 
 # --- Initialize Session State Variables ---
