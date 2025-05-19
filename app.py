@@ -39,6 +39,25 @@ st.markdown("""
 <style>
 
 
+
+.ribbon {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #8b52d720 10%, #ffffff05 60%, #8b52d700 100%);
+  animation: drift 20s linear infinite;
+  z-index: -2;
+  pointer-events: none;
+}
+
+@keyframes drift {
+  0% { transform: translateY(0%) translateX(0%); }
+  50% { transform: translateY(-2%) translateX(2%); }
+  100% { transform: translateY(0%) translateX(0%); }
+}
+
+
 .glow-orb {
   position: fixed;
   border-radius: 50%;
@@ -283,6 +302,16 @@ a:hover {
 """, unsafe_allow_html=True)
 
 
+st.markdown("""
+<div class='ribbon'></div>
+""", unsafe_allow_html=True)
+
+
+st.markdown("""
+<div class='glow-orb' style='top: 20%; left: 10%; animation-delay: 0s;'></div>
+<div class='glow-orb' style='top: 60%; left: 80%; animation-delay: 2s;'></div>
+<div class='glow-orb' style='top: 40%; left: 50%; animation-delay: 4s;'></div>
+""", unsafe_allow_html=True)
 
 
 st.markdown("""
