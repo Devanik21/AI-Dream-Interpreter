@@ -16,12 +16,13 @@ from io import BytesIO
 # --- Constants ---
 LUCIDITY_INDICATORS = [
     "realize", "aware", "conscious", "control", "lucid", "self-aware",
-    "flying", "change", "manipulate", "decided to", "knew i was dreaming",
+    "flying", "change", "manipulate", "decided to", "knew i was dreaming", "i knew it was a dream",
     "reality check", "dream sign", "knew it was a dream", "questioned reality",
     "became lucid", "altered dream", "controlled dream", "observed dream",
     "willed", "manifested", "changed scene", "interacted consciously",
-    "dream control", "self-realization", "meta-awareness", "cognitive clarity",
-    "volitional control", "awoke within dream"
+    "dream control", "self-realization", "meta-awareness", "cognitive clarity", "mind awake",
+    "volitional control", "awoke within dream", "conscious choice", "directed the dream",
+    "aware of dreaming state", "recognized dream", "took control", "changed outcome"
 ]
 
 SPIRITUAL_INSIGHTS_LIST = [
@@ -39,7 +40,11 @@ SPIRITUAL_INSIGHTS_LIST = [
     "🎭 Persona Masks: Characters in dreams can be facets of your own psyche.",
     "🔗 Synchronicity Signs: Dream elements may echo waking life synchronicities.",
     "🌱 Seed of Potential: Every dream contains a seed for growth or understanding.",
-    "🧭 Inner Compass: Dreams can offer guidance when you feel lost."
+    "🧭 Inner Compass: Dreams can offer guidance when you feel lost.",
+    "🗝️ Key to Liberation: Some dreams hold the key to breaking old patterns.",
+    "🌌 Cosmic Echoes: Your dreams may resonate with universal archetypal energies.",
+    "🛡️ Psychic Shielding: Nightmares can sometimes be a call to strengthen your inner defenses.",
+    "🕊️ Soul Messengers: Animals or figures in dreams can be messengers from your deeper self."
 ]
 
 MAJOR_ARCANA_CARDS = [
@@ -69,16 +74,25 @@ MAJOR_ARCANA_CARDS = [
 
 DREAM_THEMES_TO_ANALYZE = [
     "water", "falling", "flying", "chase", "teeth", "death", "lost", "school", "exam",
-    "naked", "paralysis", "monster", "celebrity", "journey", "vehicle", "baby",
+    "naked", "paralysis", "monster", "celebrity", "journey", "vehicle", "car", "train", "ship", "baby",
     "pregnancy", "wedding", "party", "work", "money", "finding rooms", "being late",
-    "unable to speak", "natural disaster", "animals", "stuck", "labyrinth", "mirror"
+    "unable to speak", "natural disaster", "earthquake", "flood", "fire", "animals", "dog", "cat", "snake", "bird",
+    "stuck", "labyrinth", "mirror", "house", "door", "window", "key", "book", "light", "darkness",
+    "road", "bridge", "mountain", "river", "tree", "forest", "ocean", "flower", "spider", "wolf",
+    "blood", "gold", "silver", "sword", "shield", "crown", "mask", "stairs", "phone", "computer",
+    "music", "dancing", "singing", "painting", "writing", "reading", "teaching", "learning",
+    "healing", "injury", "hospital", "doctor", "police", "thief", "ghost", "alien", "angel", "demon",
+    "past life", "future", "prophecy", "magic", "ritual", "temple", "church", "grave", "coffin"
 ]
 
 NEGATIVE_EMOTION_KEYWORDS = [
     "fear", "anxious", "terror", "nightmare", "dread", "horror", "sadness", "anger",
     "panic", "despair", "grief", "shame", "guilt", "helplessness", "vulnerability",
     "suffocation", "trapped", "abandonment", "betrayal", "loneliness", "unease",
-    "foreboding", "apprehension", "distress"
+    "foreboding", "apprehension", "distress", "torment", "agony", "anguish", "misery",
+    "frustration", "irritation", "resentment", "bitterness", "envy", "jealousy",
+    "insecurity", "doubt", "suspicion", "paranoia", "confusion", "bewilderment",
+    "overwhelmed", "stressed", "pressured", "burdened", "exhausted", "drained"
 ]
 
 DEFAULT_ERROR_MESSAGE = "🔮 Apologies, the astral currents are disturbed. The vision could not be fully deciphered. Please try again or check API key/quota."
@@ -611,7 +625,37 @@ def get_dream_symbol_meaning(symbol):
         "ship": "Journey, exploration, emotional voyage, or navigating life's waters.",
         "train": "Life's journey on a set path, destiny, or collective movement.",
         "car": "Personal journey, control, direction in life, or how you move through life.",
-        "phone": "Communication, connection, messages, or difficulty connecting."
+        "phone": "Communication, connection, messages, or difficulty connecting.",
+        "computer": "Logic, information processing, connection, or sometimes feeling overwhelmed by data.",
+        "music": "Harmony, emotions, expression, rhythm of life, or spiritual connection.",
+        "dancing": "Joy, freedom, expression, celebration, or harmony with life.",
+        "painting": "Creativity, self-expression, bringing ideas to life, or a message in colors/shapes.",
+        "writing": "Communication, self-expression, recording thoughts, or a story unfolding.",
+        "teacher": "Guidance, learning, authority, or an aspect of yourself offering wisdom.",
+        "student": "Learning, openness to new ideas, feeling tested, or a stage of development.",
+        "hospital": "Healing, need for care, vulnerability, or a place of recovery.",
+        "doctor": "Healing, authority, seeking help, or an aspect of self that can mend.",
+        "police": "Authority, rules, order, conscience, or feeling controlled/judged.",
+        "thief": "Loss, feeling violated, hidden desires, or something being taken from you (or by you).",
+        "ghost": "Unresolved issues, past influences, lingering emotions, or the unknown.",
+        "alien": "The unknown, feeling different, new perspectives, or external influences.",
+        "angel": "Guidance, protection, purity, spiritual messages, or higher self.",
+        "demon": "Inner conflicts, shadow aspects, negativity, temptation, or repressed fears.",
+        "shadow": "The unconscious, repressed aspects of self, unknown, or hidden potential.",
+        "island": "Isolation, independence, refuge, or feeling cut off.",
+        "desert": "Barrenness, spiritual searching, solitude, or a period of difficulty.",
+        "garden": "Growth, nurturing, beauty, potential, or a cultivated aspect of self.",
+        "food": "Nourishment, sustenance, needs, desires, or emotional hunger.",
+        "eating": "Taking in experiences, nourishment, or consumption.",
+        "running": "Escape, ambition, exercise, or moving quickly through something.",
+        "swimming": "Navigating emotions, subconscious exploration, or flow.",
+        "climbing": "Overcoming obstacles, ambition, progress, or struggle.",
+        "searching": "Looking for something, quest, unmet needs, or seeking answers.",
+        "hiding": "Avoidance, fear, secrets, or protecting oneself.",
+        "fighting": "Conflict, struggle, defense, or inner turmoil.",
+        "kissing": "Affection, connection, intimacy, or union.",
+        "sex": "Intimacy, creation, passion, union of opposites, or primal energy.",
+        "jewelry": "Value, self-worth, adornment, or special qualities."
     }
     
     return dream_dictionary.get(symbol.lower(), "Symbol not found in dream dictionary.")
@@ -652,22 +696,26 @@ def extract_emotions(interpretation):
     # Simple emotion extraction from interpretation text
     emotions = []
     emotion_keywords = {
-        "fear": ["fear", "afraid", "terror", "dread", "horror", "anxious", "petrified", "alarmed", "apprehensive", "panic"],
-        "joy": ["joy", "happiness", "delight", "pleasure", "bliss", "ecstasy", "elation", "euphoria", "contentment", "glee", "elated"],
-        "sadness": ["sad", "sorrow", "grief", "melancholy", "despair", "heartbreak", "despondency", "misery", "mournful"],
-        "anger": ["anger", "rage", "fury", "wrath", "hostility", "irritation", "frustration", "resentment", "bitterness", "indignation"],
-        "confusion": ["confusion", "bewilderment", "perplexity", "uncertainty", "disoriented", "baffled", "puzzled", "lost"],
-        "peace": ["peace", "calm", "tranquility", "serenity", "harmony", "serene", "content", "relaxed", "soothed"],
-        "anticipation": ["anticipation", "expectation", "excitement", "hope", "eagerness", "suspense", "expectant"],
-        "disgust": ["disgust", "revulsion", "distaste", "aversion", "repulsion", "loathing", "sickened"],
-        "surprise": ["surprise", "astonishment", "amazement", "shock", "startled", "stunned", "unexpected"],
-        "trust": ["trust", "confidence", "reliance", "faith", "assurance", "belief", "secure"],
-        "mystical": ["mystical", "spiritual", "transcendent", "divine", "cosmic", "ethereal", "numinous", "sacred", "magical"],
-        "curiosity": ["curious", "inquisitive", "intrigued", "wonder", "questioning", "exploring"],
-        "empowerment": ["empowered", "strong", "capable", "confident", "victorious", "powerful", "triumphant"],
-        "vulnerability": ["vulnerable", "exposed", "defenseless", "fragile", "helpless", "unprotected"],
-        "longing": ["longing", "yearning", "desire", "nostalgia", "wistful"],
-        "shame": ["shame", "guilt", "embarrassment", "remorse", "humiliation"]
+        "fear": ["fear", "afraid", "terror", "dread", "horror", "anxious", "petrified", "alarmed", "apprehensive", "panic", "frightened", "scared"],
+        "joy": ["joy", "happiness", "delight", "pleasure", "bliss", "ecstasy", "elation", "euphoria", "contentment", "glee", "elated", "cheerful", "jubilant"],
+        "sadness": ["sad", "sorrow", "grief", "melancholy", "despair", "heartbreak", "despondency", "misery", "mournful", "dejected", "gloomy"],
+        "anger": ["anger", "rage", "fury", "wrath", "hostility", "irritation", "frustration", "resentment", "bitterness", "indignation", "annoyed", "enraged"],
+        "confusion": ["confusion", "bewilderment", "perplexity", "uncertainty", "disoriented", "baffled", "puzzled", "lost", "conflicted", "ambivalent"],
+        "peace": ["peace", "calm", "tranquility", "serenity", "harmony", "serene", "content", "relaxed", "soothed", "at ease", "restful"],
+        "anticipation": ["anticipation", "expectation", "excitement", "hope", "eagerness", "suspense", "expectant", "looking forward"],
+        "disgust": ["disgust", "revulsion", "distaste", "aversion", "repulsion", "loathing", "sickened", "repugnance"],
+        "surprise": ["surprise", "astonishment", "amazement", "shock", "startled", "stunned", "unexpected", "taken aback"],
+        "trust": ["trust", "confidence", "reliance", "faith", "assurance", "belief", "secure", "certainty"],
+        "mystical": ["mystical", "spiritual", "transcendent", "divine", "cosmic", "ethereal", "numinous", "sacred", "magical", "otherworldly", "visionary"],
+        "curiosity": ["curious", "inquisitive", "intrigued", "wonder", "questioning", "exploring", "investigative", "prying"],
+        "empowerment": ["empowered", "strong", "capable", "confident", "victorious", "powerful", "triumphant", "resilient", "courageous"],
+        "vulnerability": ["vulnerable", "exposed", "defenseless", "fragile", "helpless", "unprotected", "sensitive", "susceptible"],
+        "longing": ["longing", "yearning", "desire", "nostalgia", "wistful", "pining", "craving"],
+        "shame": ["shame", "guilt", "embarrassment", "remorse", "humiliation", "regret", "self-reproach"],
+        "love": ["love", "affection", "adoration", "fondness", "tenderness", "devotion", "passion", "cherish"],
+        "relief": ["relief", "relieved", "comfort", "solace", "ease", "unburdened"],
+        "determination": ["determination", "resolved", "perseverance", "tenacity", "steadfast", "driven", "committed"],
+        "awe": ["awe", "wonder", "amazement", "reverence", "admiration", "fascination"]
     }
     
     for emotion, keywords in emotion_keywords.items():
