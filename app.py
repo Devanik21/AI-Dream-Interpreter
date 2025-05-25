@@ -15,8 +15,13 @@ from io import BytesIO
 
 # --- Constants ---
 LUCIDITY_INDICATORS = [
-    "realize", "aware", "conscious", "control", "lucid",
-    "flying", "change", "manipulate", "decided to", "knew i was dreaming"
+    "realize", "aware", "conscious", "control", "lucid", "self-aware",
+    "flying", "change", "manipulate", "decided to", "knew i was dreaming",
+    "reality check", "dream sign", "knew it was a dream", "questioned reality",
+    "became lucid", "altered dream", "controlled dream", "observed dream",
+    "willed", "manifested", "changed scene", "interacted consciously",
+    "dream control", "self-realization", "meta-awareness", "cognitive clarity",
+    "volitional control", "awoke within dream"
 ]
 
 SPIRITUAL_INSIGHTS_LIST = [
@@ -29,7 +34,12 @@ SPIRITUAL_INSIGHTS_LIST = [
     "🪐 Planetary Influence: Celestial bodies affect dream symbolism.",
     "🧙 Dream Alchemy: Transmuting shadow elements into spiritual gold.",
     "🪄 Conscious Dreaming: Awakening within the dream state.",
-    "🔥 Phoenix Rebirth: Death symbols announce spiritual awakening."
+    "🔥 Phoenix Rebirth: Death symbols announce spiritual awakening.",
+    "⏳ Time Illusions: Dreams often play with non-linear time.",
+    "🎭 Persona Masks: Characters in dreams can be facets of your own psyche.",
+    "🔗 Synchronicity Signs: Dream elements may echo waking life synchronicities.",
+    "🌱 Seed of Potential: Every dream contains a seed for growth or understanding.",
+    "🧭 Inner Compass: Dreams can offer guidance when you feel lost."
 ]
 
 MAJOR_ARCANA_CARDS = [
@@ -57,9 +67,19 @@ MAJOR_ARCANA_CARDS = [
     ("The World", "Completion, accomplishment, fulfillment, integration, travel, wholeness, success, cosmic dance")
 ]
 
-DREAM_THEMES_TO_ANALYZE = ["water", "falling", "flying", "chase", "teeth", "death", "lost"]
+DREAM_THEMES_TO_ANALYZE = [
+    "water", "falling", "flying", "chase", "teeth", "death", "lost", "school", "exam",
+    "naked", "paralysis", "monster", "celebrity", "journey", "vehicle", "baby",
+    "pregnancy", "wedding", "party", "work", "money", "finding rooms", "being late",
+    "unable to speak", "natural disaster", "animals", "stuck", "labyrinth", "mirror"
+]
 
-NEGATIVE_EMOTION_KEYWORDS = ["fear", "anxious", "terror", "nightmare", "dread", "horror", "sadness", "anger"]
+NEGATIVE_EMOTION_KEYWORDS = [
+    "fear", "anxious", "terror", "nightmare", "dread", "horror", "sadness", "anger",
+    "panic", "despair", "grief", "shame", "guilt", "helplessness", "vulnerability",
+    "suffocation", "trapped", "abandonment", "betrayal", "loneliness", "unease",
+    "foreboding", "apprehension", "distress"
+]
 
 DEFAULT_ERROR_MESSAGE = "🔮 Apologies, the astral currents are disturbed. The vision could not be fully deciphered. Please try again or check API key/quota."
 
@@ -544,24 +564,54 @@ def draw_tarot_cards():
 # --- FEATURE 5: Dream Dictionary ---
 def get_dream_symbol_meaning(symbol):
     dream_dictionary = {
-        "water": "Represents emotions, the unconscious, and life's flow",
-        "fire": "Symbolizes transformation, passion, and destruction or rebirth",
-        "flying": "Indicates freedom, transcendence, or escaping limitations",
-        "falling": "Suggests insecurity, loss of control, or letting go",
-        "teeth": "Connected to appearance, communication, or power",
-        "snake": "Represents transformation, healing, or hidden fears",
-        "house": "Symbolizes the self, personality, and your inner spaces",
-        "death": "Indicates transformation, endings, and new beginnings",
-        "baby": "Symbolizes new beginnings, vulnerability, or a neglected aspect of self",
-        "money": "Represents self-worth, energy exchange, or values",
-        "mirror": "Indicates self-reflection, identity, and truth perception",
-        "door": "Symbolizes opportunities, transitions, and choices",
-        "forest": "Represents the unknown, unconscious, or feeling lost",
-        "ocean": "Symbolizes the collective unconscious, emotions, or overwhelm",
-        "animals": "Often represents instinctual aspects of self or personality traits",
-        "chase": "Indicates avoidance, fear, or unresolved conflicts",
-        "naked": "Suggests vulnerability, authenticity, or fear of exposure",
-        "exam": "Represents self-evaluation, fear of failure, or feeling tested"
+        "water": "Emotions, the unconscious, intuition, purity, or the flow of life. Depth can indicate deep emotions.",
+        "fire": "Transformation, passion, anger, destruction, purification, or spiritual illumination.",
+        "flying": "Freedom, transcendence, escaping limitations, ambition, or a new perspective.",
+        "falling": "Insecurity, loss of control, anxiety, failure, or letting go of something.",
+        "teeth": "Communication, appearance, power, anxiety about changes, or loss of strength. Falling teeth can mean vulnerability.",
+        "snake": "Transformation, healing, hidden fears, temptation, wisdom, or primal energy. Shedding skin implies renewal.",
+        "house": "The self, personality, different rooms representing aspects of your psyche. Condition of house is important.",
+        "death": "Endings, transformation, new beginnings, letting go of old patterns, not usually literal death.",
+        "baby": "New beginnings, vulnerability, a neglected aspect of self, potential, or a new idea.",
+        "money": "Self-worth, energy exchange, values, abundance, or anxiety about resources.",
+        "mirror": "Self-reflection, identity, truth perception, illusions, or seeing oneself clearly (or not).",
+        "door": "Opportunities, transitions, choices, new paths, or blocked passages.",
+        "forest": "The unknown, unconscious, feeling lost, exploration, or a journey into the self. Can be menacing or enchanting.",
+        "ocean": "The collective unconscious, vast emotions, overwhelm, spiritual depth, or the unknown.",
+        "animals": "Instinctual aspects of self, personality traits, or specific animal symbolism (e.g., loyalty for dog, cunning for fox).",
+        "chase": "Avoidance, fear, unresolved conflicts, running from something in waking life, or being pursued by an aspect of self.",
+        "naked": "Vulnerability, authenticity, fear of exposure, shame, or feeling unprepared.",
+        "exam": "Self-evaluation, fear of failure, feeling tested, judgment, or anxiety about performance.",
+        "key": "Solutions, unlocking potential, access, secrets, or new understanding.",
+        "book": "Knowledge, wisdom, stories, learning, or a message to be understood.",
+        "light": "Clarity, understanding, hope, spiritual insight, or truth.",
+        "darkness": "The unknown, fear, the unconscious, hidden aspects, or confusion.",
+        "road": "Life's journey, path, direction, choices, or progress.",
+        "bridge": "Transitions, connections, overcoming obstacles, or moving between states.",
+        "mountain": "Challenges, achievements, obstacles, spiritual ascent, or perspective.",
+        "river": "Flow of life, emotions, time, or a journey.",
+        "tree": "Growth, stability, roots, connection to nature, or personal development. Dead tree can mean stagnation.",
+        "flower": "Beauty, growth, potential, love, or fragility. Different flowers have different meanings.",
+        "bird": "Freedom, messages, spirituality, aspirations, or thoughts.",
+        "cat": "Independence, intuition, mystery, sensuality, or hidden aspects.",
+        "dog": "Loyalty, friendship, protection, instinct, or unconditional love.",
+        "horse": "Power, freedom, drive, passion, or carrying burdens.",
+        "wolf": "Instinct, intuition, wildness, pack mentality, or hidden threat.",
+        "spider": "Creativity, weaving fate, patience, or feeling trapped/entangled.",
+        "blood": "Life force, passion, energy, injury, or family ties.",
+        "gold": "Value, wealth, purity, enlightenment, or spiritual treasure.",
+        "silver": "Intuition, feminine energy, reflection, value, or hidden knowledge.",
+        "sword": "Power, intellect, truth, conflict, or cutting through illusion.",
+        "shield": "Protection, defense, boundaries, or guarding oneself.",
+        "crown": "Authority, power, achievement, recognition, or sovereignty.",
+        "mask": "Hidden identity, persona, deception, or protection.",
+        "labyrinth": "Life's journey, confusion, finding the center, introspection, or a complex problem.",
+        "stairs": "Progress, ascent/descent, spiritual journey, or levels of consciousness.",
+        "window": "Perspective, insight, opportunities, or looking into/out of a situation.",
+        "ship": "Journey, exploration, emotional voyage, or navigating life's waters.",
+        "train": "Life's journey on a set path, destiny, or collective movement.",
+        "car": "Personal journey, control, direction in life, or how you move through life.",
+        "phone": "Communication, connection, messages, or difficulty connecting."
     }
     
     return dream_dictionary.get(symbol.lower(), "Symbol not found in dream dictionary.")
@@ -602,17 +652,22 @@ def extract_emotions(interpretation):
     # Simple emotion extraction from interpretation text
     emotions = []
     emotion_keywords = {
-        "fear": ["fear", "afraid", "terror", "dread", "horror", "anxious"],
-        "joy": ["joy", "happiness", "delight", "pleasure", "bliss", "ecstasy"],
-        "sadness": ["sad", "sorrow", "grief", "melancholy", "despair"],
-        "anger": ["anger", "rage", "fury", "wrath", "hostility", "irritation"],
-        "confusion": ["confusion", "bewilderment", "perplexity", "uncertainty"],
-        "peace": ["peace", "calm", "tranquility", "serenity", "harmony"],
-        "anticipation": ["anticipation", "expectation", "excitement", "hope"],
-        "disgust": ["disgust", "revulsion", "distaste", "aversion"],
-        "surprise": ["surprise", "astonishment", "amazement", "shock"],
-        "trust": ["trust", "confidence", "reliance", "faith"],
-        "mystical": ["mystical", "spiritual", "transcendent", "divine", "cosmic"]
+        "fear": ["fear", "afraid", "terror", "dread", "horror", "anxious", "petrified", "alarmed", "apprehensive", "panic"],
+        "joy": ["joy", "happiness", "delight", "pleasure", "bliss", "ecstasy", "elation", "euphoria", "contentment", "glee", "elated"],
+        "sadness": ["sad", "sorrow", "grief", "melancholy", "despair", "heartbreak", "despondency", "misery", "mournful"],
+        "anger": ["anger", "rage", "fury", "wrath", "hostility", "irritation", "frustration", "resentment", "bitterness", "indignation"],
+        "confusion": ["confusion", "bewilderment", "perplexity", "uncertainty", "disoriented", "baffled", "puzzled", "lost"],
+        "peace": ["peace", "calm", "tranquility", "serenity", "harmony", "serene", "content", "relaxed", "soothed"],
+        "anticipation": ["anticipation", "expectation", "excitement", "hope", "eagerness", "suspense", "expectant"],
+        "disgust": ["disgust", "revulsion", "distaste", "aversion", "repulsion", "loathing", "sickened"],
+        "surprise": ["surprise", "astonishment", "amazement", "shock", "startled", "stunned", "unexpected"],
+        "trust": ["trust", "confidence", "reliance", "faith", "assurance", "belief", "secure"],
+        "mystical": ["mystical", "spiritual", "transcendent", "divine", "cosmic", "ethereal", "numinous", "sacred", "magical"],
+        "curiosity": ["curious", "inquisitive", "intrigued", "wonder", "questioning", "exploring"],
+        "empowerment": ["empowered", "strong", "capable", "confident", "victorious", "powerful", "triumphant"],
+        "vulnerability": ["vulnerable", "exposed", "defenseless", "fragile", "helpless", "unprotected"],
+        "longing": ["longing", "yearning", "desire", "nostalgia", "wistful"],
+        "shame": ["shame", "guilt", "embarrassment", "remorse", "humiliation"]
     }
     
     for emotion, keywords in emotion_keywords.items():
