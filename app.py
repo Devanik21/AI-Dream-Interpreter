@@ -44,11 +44,14 @@ st.markdown("""
   position: fixed;
   top: 0;
   width: 100vw;
+  left: 0; /* Ensure it covers from the left edge */
   height: 100vh;
-  background: linear-gradient(135deg, #8b52d720 10%, #ffffff05 60%, #8b52d700 100%);
-  animation: drift 20s linear infinite;
+  /* Softer, more diffuse gradient, less defined edges */
+  background: linear-gradient(135deg, rgba(100, 70, 150, 0.1) 0%, rgba(139, 82, 215, 0.05) 30%, transparent 70%);
+  animation: drift 30s linear infinite; /* Slower drift */
   z-index: -2;
   pointer-events: none;
+  opacity: 0.7; /* Slightly more visible but still subtle */
 }
 
 @keyframes drift {
@@ -61,16 +64,40 @@ st.markdown("""
 .glow-orb {
   position: fixed;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,255,255,0.1), transparent 70%);
-  width: 120px;
-  height: 120px;
-  animation: pulseGlow 6s ease-in-out infinite;
+  /* Softer glow, more purple-ish white */
+  background: radial-gradient(circle, rgba(200, 180, 255, 0.15) 0%, transparent 60%);
+  width: 150px; /* Slightly larger */
+  height: 150px;
+  animation: pulseGlow 8s ease-in-out infinite; /* Slower pulse */
   z-index: -2;
+  filter: blur(5px); /* Add a slight blur to soften edges */
 }
 
 @keyframes pulseGlow {
   0%, 100% { transform: scale(1); opacity: 0.5; }
   50% { transform: scale(1.5); opacity: 0.2; }
+}
+
+.cloud {
+  position: fixed;
+  background: radial-gradient(ellipse at center, rgba(120, 80, 180, 0.15) 0%, rgba(120, 80, 180, 0.05) 40%, rgba(120, 80, 180, 0) 70%);
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: driftClouds 60s linear infinite;
+  z-index: -3; /* Behind ribbon and orbs */
+  pointer-events: none;
+}
+
+@keyframes driftClouds {
+  0% {
+    transform: translateX(-100%) translateY(0%) scale(1);
+    opacity: 0;
+  }
+  25%, 75% { opacity: 0.6; }
+  100% {
+    transform: translateX(100vw) translateY(10%) scale(1.2);
+    opacity: 0;
+  }
 }
 
 @keyframes floatStars {
@@ -320,6 +347,15 @@ st.markdown("""
 <div class='star' style='left: 60%; animation-delay: 4s;'></div>
 <div class='star' style='left: 80%; animation-delay: 6s;'></div>
 """, unsafe_allow_html=True)
+
+# Add the new animated clouds
+st.markdown("""
+<div class='cloud' style='width: 400px; height: 200px; top: 10%; left: -50%; animation-delay: 0s;'></div>
+<div class='cloud' style='width: 600px; height: 300px; top: 50%; left: -60%; animation-delay: 15s; opacity: 0.4;'></div>
+<div class='cloud' style='width: 500px; height: 250px; top: 30%; left: -40%; animation-delay: 30s; background: radial-gradient(ellipse at center, rgba(100, 60, 160, 0.1) 0%, rgba(100, 60, 160, 0.03) 40%, rgba(100, 60, 160, 0) 70%);'></div>
+<div class='cloud' style='width: 700px; height: 350px; top: 70%; left: -70%; animation-delay: 45s; opacity: 0.5;'></div>
+""", unsafe_allow_html=True)
+
 
 # --- Initialize Session State Variables ---
 if "dream_log" not in st.session_state:
