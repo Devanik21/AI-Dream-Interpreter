@@ -13,6 +13,56 @@ import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
 
+# --- Constants ---
+LUCIDITY_INDICATORS = [
+    "realize", "aware", "conscious", "control", "lucid",
+    "flying", "change", "manipulate", "decided to", "knew i was dreaming"
+]
+
+SPIRITUAL_INSIGHTS_LIST = [
+    "🌌 Shadow Integration: Your darkness holds your greatest teacher.",
+    "🪞 Mirror Principle: Others reflect aspects of your unconscious.",
+    "🕸️ Dream Web: All dreams connect to a single cosmic tapestry.",
+    "🌀 Spiral Evolution: You revisit the same themes at higher levels.",
+    "🧿 Third Eye Activation: Dreams are messages from your higher self.",
+    "🔮 Akashic Record: Dreams access universal knowledge beyond time.",
+    "🪐 Planetary Influence: Celestial bodies affect dream symbolism.",
+    "🧙 Dream Alchemy: Transmuting shadow elements into spiritual gold.",
+    "🪄 Conscious Dreaming: Awakening within the dream state.",
+    "🔥 Phoenix Rebirth: Death symbols announce spiritual awakening."
+]
+
+MAJOR_ARCANA_CARDS = [
+    ("The Fool", "New beginnings, innocence, spontaneity"),
+    ("The Magician", "Manifestation, resourcefulness, power"),
+    ("The High Priestess", "Intuition, unconscious, inner voice"),
+    ("The Empress", "Nurturing, abundance, fertility"),
+    ("The Emperor", "Authority, structure, leadership"),
+    ("The Hierophant", "Tradition, conformity, spiritual wisdom"),
+    ("The Lovers", "Choices, relationships, harmony"),
+    ("The Chariot", "Determination, control, victory"),
+    ("Strength", "Courage, inner strength, resilience"),
+    ("The Hermit", "Soul-searching, introspection, guidance"),
+    ("Wheel of Fortune", "Change, cycles, destiny"),
+    ("Justice", "Fairness, truth, law"),
+    ("The Hanged Man", "Surrender, letting go, new perspective"),
+    ("Death", "Endings, change, transformation"),
+    ("Temperance", "Balance, moderation, harmony"),
+    ("The Devil", "Shadow self, attachment, materialism"),
+    ("The Tower", "Sudden change, revelation, upheaval"),
+    ("The Star", "Hope, inspiration, spirituality"),
+    ("The Moon", "Illusion, fear, subconscious"),
+    ("The Sun", "Success, joy, vitality"),
+    ("Judgment", "Reflection, reckoning, awakening"),
+    ("The World", "Completion, accomplishment, fulfillment")
+]
+
+DREAM_THEMES_TO_ANALYZE = ["water", "falling", "flying", "chase", "teeth", "death", "lost"]
+
+NEGATIVE_EMOTION_KEYWORDS = ["fear", "anxious", "terror", "nightmare", "dread", "horror", "sadness", "anger"]
+
+DEFAULT_ERROR_MESSAGE = "🔮 Apologies, the astral currents are disturbed. The vision could not be fully deciphered. Please try again or check API key/quota."
+
 # Must be FIRST Streamlit command
 st.set_page_config(page_title="DreamsWhisperer", layout="centered", page_icon="🌒")
 
@@ -461,7 +511,7 @@ def analyze_dream_patterns():
     themes = {}
     for dream, _ in st.session_state.dream_log:
         words = dream.lower().split()
-        for theme in ["water", "falling", "flying", "chase", "teeth", "death", "lost"]:
+        for theme in DREAM_THEMES_TO_ANALYZE:
             if theme in words:
                 themes[theme] = themes.get(theme, 0) + 1
     
@@ -486,33 +536,8 @@ def analyze_dream_patterns():
 
 # --- FEATURE 4: Tarot Integration ---
 def draw_tarot_cards():
-    major_arcana = [
-        ("The Fool", "New beginnings, innocence, spontaneity"),
-        ("The Magician", "Manifestation, resourcefulness, power"),
-        ("The High Priestess", "Intuition, unconscious, inner voice"),
-        ("The Empress", "Nurturing, abundance, fertility"),
-        ("The Emperor", "Authority, structure, leadership"),
-        ("The Hierophant", "Tradition, conformity, spiritual wisdom"),
-        ("The Lovers", "Choices, relationships, harmony"),
-        ("The Chariot", "Determination, control, victory"),
-        ("Strength", "Courage, inner strength, resilience"),
-        ("The Hermit", "Soul-searching, introspection, guidance"),
-        ("Wheel of Fortune", "Change, cycles, destiny"),
-        ("Justice", "Fairness, truth, law"),
-        ("The Hanged Man", "Surrender, letting go, new perspective"),
-        ("Death", "Endings, change, transformation"),
-        ("Temperance", "Balance, moderation, harmony"),
-        ("The Devil", "Shadow self, attachment, materialism"),
-        ("The Tower", "Sudden change, revelation, upheaval"),
-        ("The Star", "Hope, inspiration, spirituality"),
-        ("The Moon", "Illusion, fear, subconscious"),
-        ("The Sun", "Success, joy, vitality"),
-        ("Judgment", "Reflection, reckoning, awakening"),
-        ("The World", "Completion, accomplishment, fulfillment")
-    ]
-    
     # Draw three random cards
-    st.session_state.tarot_cards = random.sample(major_arcana, 3)
+    st.session_state.tarot_cards = random.sample(MAJOR_ARCANA_CARDS, 3)
     
     return st.session_state.tarot_cards
 
@@ -561,22 +586,11 @@ def update_dream_streak():
 
 # --- FEATURE 7: Spiritual Insight System ---
 def unlock_spiritual_insight():
-    insights = [
-        "🌌 Shadow Integration: Your darkness holds your greatest teacher.",
-        "🪞 Mirror Principle: Others reflect aspects of your unconscious.",
-        "🕸️ Dream Web: All dreams connect to a single cosmic tapestry.",
-        "🌀 Spiral Evolution: You revisit the same themes at higher levels.",
-        "🧿 Third Eye Activation: Dreams are messages from your higher self.",
-        "🔮 Akashic Record: Dreams access universal knowledge beyond time.",
-        "🪐 Planetary Influence: Celestial bodies affect dream symbolism.",
-        "🧙 Dream Alchemy: Transmuting shadow elements into spiritual gold.",
-        "🪄 Conscious Dreaming: Awakening within the dream state.",
-        "🔥 Phoenix Rebirth: Death symbols announce spiritual awakening."
-    ]
-    
     if len(st.session_state.dream_log) % 3 == 0:
         # Unlock insight every 3 dreams
-        available_insights = [i for i in insights if i not in st.session_state.spiritual_insights_unlocked]
+        available_insights = [
+            i for i in SPIRITUAL_INSIGHTS_LIST if i not in st.session_state.spiritual_insights_unlocked
+        ]
         if available_insights:
             new_insight = random.choice(available_insights)
             st.session_state.spiritual_insights_unlocked.append(new_insight)
@@ -615,15 +629,10 @@ def extract_emotions(interpretation):
 
 # --- FEATURE 9: Lucidity Score Calculator ---
 def calculate_lucidity_score(dream_text):
-    lucidity_indicators = [
-        "realize", "aware", "conscious", "control", "lucid", 
-        "flying", "change", "manipulate", "decided to", "knew i was dreaming"
-    ]
-    
     score = 1  # Base score
     
     dream_lower = dream_text.lower()
-    for indicator in lucidity_indicators:
+    for indicator in LUCIDITY_INDICATORS:
         if indicator in dream_lower:
             score += 1
     
@@ -776,14 +785,16 @@ if api_key:
     tab1, tab_incubation, tab2, tab3, tab4 = st.tabs(["🌙 Dream Journal", "🌿 Dream Incubation", "🔮 Tarot Reading", "📊 Dream Stats", "📖 Dream Dictionary"])
     
     with tab1:
+        is_age_valid = True
         st.markdown("## 🪐 Your Shadow Vision")
         
         col1, col2 = st.columns(2)
         with col1:
-            age = st.text_input("🌒 Your Age", placeholder="e.g. 21")
-            if age and not age.isdigit():
-                st.warning("⚠️ Age must be numeric.")
-                st.stop()
+            age_input = st.text_input("🌒 Your Age", placeholder="e.g. 21", key="age_input_validation")
+            if age_input and not age_input.isdigit():
+                st.warning("⚠️ Age must be numeric for the veils to part correctly.")
+                is_age_valid = False
+            age_for_prompt = age_input if is_age_valid and age_input else "Unknown"
                 
         with col2:
             gender = st.selectbox("🌌 Your Inner Nature", 
@@ -815,7 +826,7 @@ if api_key:
 
         col1, col2, col3 = st.columns([1,2,1])
         with col2:
-            interpret_btn = st.button("🔮 Pierce the Veil")
+            interpret_btn = st.button("🔮 Pierce the Veil", disabled=not is_age_valid)
 
         if interpret_btn:
             if not dream.strip():
@@ -844,8 +855,8 @@ if api_key:
                     new_insight = unlock_spiritual_insight()
                     
                     prompt = f"""
-You are NocturneVisions, a mysterious and cryptic dream interpreter. Use Jungian archetypes, shadow psychology, and occult symbolism to analyze the dream deeply.
-
+You are NocturneVisions, a mysterious and cryptic dream interpreter. Use Jungian archetypes, shadow psychology, and occult symbolism to analyze the dream deeply. 
+Your interpretations should be profound, slightly unsettling, yet ultimately empowering, guiding the dreamer to understand their hidden depths.
 Dreamer Info:
 - Age: {age if age else 'Unknown'}
 - Nature: {gender if gender != 'Select' else 'Unspecified'}
@@ -864,9 +875,13 @@ Respond as an ancient oracle from the void. Include:
 
 Tone: dark, cryptic, profound, mysterious, hypnotic.
 """
-
-                    response = model.generate_content(prompt)
-                    interpretation = response.text
+                    try:
+                        response = model.generate_content(prompt)
+                        interpretation = response.text
+                    except Exception as e:
+                        st.error(f"{DEFAULT_ERROR_MESSAGE} Error: {e}")
+                        interpretation = "The dream's essence remains veiled due to a disturbance in the astral connection."
+                        st.stop() # Stop further processing if interpretation fails
 
                     # Extract emotions from interpretation
                     emotions = extract_emotions(interpretation)
@@ -956,8 +971,7 @@ Tone: dark, cryptic, profound, mysterious, hypnotic.
                     os.remove(audio_path)
 
                     # Offer Shadow Transmutation Ritual if negative emotions are strong
-                    negative_emotion_keywords = ["fear", "anxious", "terror", "nightmare", "dread", "horror", "sadness", "anger"]
-                    has_negative_emotion = any(emo_keyword in emotions for emo_keyword in negative_emotion_keywords)
+                    has_negative_emotion = any(emo_keyword in emotions for emo_keyword in NEGATIVE_EMOTION_KEYWORDS)
 
                     if has_negative_emotion:
                         st.markdown("---")
@@ -979,9 +993,14 @@ Craft a brief (2-4 sentences) symbolic ritual or empowering affirmation to help 
 Focus on themes of release, understanding, and integration. Use powerful, yet comforting mystical language.
 Example: 'Breathe out the lingering shadows, see them as smoke dissolving into the cosmic ether. Within their echo lies a hidden key; turn it, and unlock the strength forged in darkness.'
 """
-                                transmutation_response = model.generate_content(transmutation_prompt)
-                                ritual_text = transmutation_response.text
-                                st.markdown(f"<div class='dream-box' style='color: #d4afff; border-color: #7348aa;'>{ritual_text}</div>", unsafe_allow_html=True)
+                                try:
+                                    transmutation_response = model.generate_content(transmutation_prompt)
+                                    ritual_text = transmutation_response.text
+                                    st.markdown(f"<div class='dream-box' style='color: #d4afff; border-color: #7348aa;'>{ritual_text}</div>", unsafe_allow_html=True)
+                                except Exception as e:
+                                    st.error(f"The alchemical currents are unstable. The ritual could not be completed. Error: {e}")
+                                    ritual_text = "The transmutation ritual was interrupted."
+                                    st.markdown(f"<div class='dream-box' style='color: #d4afff; border-color: #7348aa;'>{ritual_text}</div>", unsafe_allow_html=True)
 
     with tab_incubation:
         st.markdown("## 🌿 Dream Incubation & Intention Setting")
@@ -1009,9 +1028,13 @@ Use imagery of stars, gentle darkness, the subconscious mind, and the liminal sp
 Your tone should be comforting, profound, and slightly hypnotic.
 Example: 'As twilight deepens, let your intention be a single star guiding your journey through the velvet void. Trust the whispers of your inner sanctum to illuminate the path as you drift into the cosmic sea.'
 """
-                    affirmation_response = model.generate_content(incubation_prompt)
-                    affirmation_text = affirmation_response.text
-                    st.session_state.current_intention_details = {"text": intention_text, "affirmation": affirmation_text}
+                    try:
+                        affirmation_response = model.generate_content(incubation_prompt)
+                        affirmation_text = affirmation_response.text
+                        st.session_state.current_intention_details = {"text": intention_text, "affirmation": affirmation_text}
+                    except Exception as e:
+                        st.error(f"The DreamWeaver's loom is tangled. Your intention could not be woven. Error: {e}")
+                        st.session_state.current_intention_details = {"text": intention_text, "affirmation": "The threads of intention are currently obscured. Please try again."}
 
         if st.session_state.current_intention_details:
             st.markdown("### ✨ Your Woven Intention")
@@ -1085,10 +1108,13 @@ Provide a short mystical interpretation (2-3 paragraphs) that connects the dream
 Focus on revealing hidden truths and potential growth paths.
 Use a poetic, cryptic tone with cosmic and occult imagery.
 """
-                    tarot_response = model.generate_content(tarot_prompt)
-                    tarot_interpretation = tarot_response.text
-                    
-                    st.markdown(f"<div class='dream-box'>{tarot_interpretation}</div>", unsafe_allow_html=True)
+                    try:
+                        tarot_response = model.generate_content(tarot_prompt)
+                        tarot_interpretation = tarot_response.text
+                        st.markdown(f"<div class='dream-box'>{tarot_interpretation}</div>", unsafe_allow_html=True)
+                    except Exception as e:
+                        st.error(f"The astral connection for tarot guidance is unclear. Error: {e}")
+                        st.markdown(f"<div class='dream-box'>The cards' connection to your dream remains shrouded in mist.</div>", unsafe_allow_html=True)
 
     with tab3:
         st.markdown("## 📊 Dream Pattern Analysis")
@@ -1191,16 +1217,18 @@ Include:
 
 Use a mystical, poetic tone but remain informative.
 """
-                    symbol_response = model.generate_content(symbol_prompt)
-                    expanded_meaning = symbol_response.text
-                    
-                    st.markdown(f"""
-                    <div class="dream-box">
-                        <h3 style="margin-top: 0;">Expanded Interpretation</h3>
-                        <hr>
-                        {expanded_meaning}
-                    </div>
-                    """, unsafe_allow_html=True)
+                    try:
+                        symbol_response = model.generate_content(symbol_prompt)
+                        expanded_meaning = symbol_response.text
+                        st.markdown(f"""
+                        <div class="dream-box">
+                            <h3 style="margin-top: 0;">Expanded Interpretation</h3>
+                            <hr>
+                            {expanded_meaning}
+                        </div>
+                        """, unsafe_allow_html=True)
+                    except Exception as e:
+                        st.error(f"The ancient texts are currently inaccessible for '{dream_symbol}'. Error: {e}")
         
         # Show common symbols from dream logs
         if st.session_state.dream_themes:
@@ -1263,4 +1291,3 @@ with st.sidebar:
     st.image("dream3.jpg", caption="🧿 Eye of the Inner Realms", use_container_width=True)
 
 st.image("dream2.jpg" ,caption="🕯️ Gateway to the Void",use_container_width=True)
-
