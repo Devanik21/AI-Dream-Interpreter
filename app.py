@@ -345,6 +345,8 @@ if "dream_themes" not in st.session_state:
     st.session_state.dream_themes = {}
 if "spiritual_insights_unlocked" not in st.session_state:
     st.session_state.spiritual_insights_unlocked = []
+if "current_intention_details" not in st.session_state:
+    st.session_state.current_intention_details = None # Will store {"text": "", "affirmation": ""}
 
 # --- FEATURE 1: Lunar Calendar & Moon Phase Generator ---
 def get_current_moon_phase():
@@ -735,7 +737,7 @@ if api_key:
     model = genai.GenerativeModel("models/gemini-2.0-flash")
     
     # --- Create tabs for different features ---
-    tab1, tab2, tab3, tab4 = st.tabs(["🌙 Dream Journal", "🔮 Tarot Reading", "📊 Dream Stats", "📖 Dream Dictionary"])
+    tab1, tab_incubation, tab2, tab3, tab4 = st.tabs(["🌙 Dream Journal", "🌿 Dream Incubation", "🔮 Tarot Reading", "📊 Dream Stats", "📖 Dream Dictionary"])
     
     with tab1:
         st.markdown("## 🪐 Your Shadow Vision")
@@ -917,6 +919,77 @@ Tone: dark, cryptic, profound, mysterious, hypnotic.
                     st.markdown("</div>", unsafe_allow_html=True)
                     os.remove(audio_path)
 
+                    # Offer Shadow Transmutation Ritual if negative emotions are strong
+                    negative_emotion_keywords = ["fear", "anxious", "terror", "nightmare", "dread", "horror", "sadness", "anger"]
+                    has_negative_emotion = any(emo_keyword in emotions for emo_keyword in negative_emotion_keywords)
+
+                    if has_negative_emotion:
+                        st.markdown("---")
+                        st.markdown("### ✨ Shadow Transmutation Ritual")
+                        st.markdown("""
+                        <div class='dream-box' style='background: linear-gradient(145deg, #1a052e, #300f4a); border-color: #503080;'>
+                        Your vision carries potent energies. If you wish, we can perform a rite to transmute its heavier shadows into understanding and strength.
+                        </div>
+                        """, unsafe_allow_html=True)
+                        if st.button("🔮 Perform Shadow Transmutation", key=f"transmute_{len(st.session_state.dream_log)}"):
+                            with st.spinner("Invoking alchemical currents..."):
+                                transmutation_prompt = f"""
+You are a benevolent Shadow Alchemist. The dreamer experienced a challenging vision.
+Dream: \"\"\"{dream}\"\"\"
+Interpretation Essence: \"\"\"{interpretation[:300]}...\"\"\"
+Core Negative Emotions Identified: {', '.join(emotions)}
+
+Craft a brief (2-4 sentences) symbolic ritual or empowering affirmation to help the dreamer transmute this shadow experience into wisdom or strength.
+Focus on themes of release, understanding, and integration. Use powerful, yet comforting mystical language.
+Example: 'Breathe out the lingering shadows, see them as smoke dissolving into the cosmic ether. Within their echo lies a hidden key; turn it, and unlock the strength forged in darkness.'
+"""
+                                transmutation_response = model.generate_content(transmutation_prompt)
+                                ritual_text = transmutation_response.text
+                                st.markdown(f"<div class='dream-box' style='color: #d4afff; border-color: #7348aa;'>{ritual_text}</div>", unsafe_allow_html=True)
+
+    with tab_incubation:
+        st.markdown("## 🌿 Dream Incubation & Intention Setting")
+        st.markdown("""
+        <div class="dream-box">
+        Plant a seed in the fertile soil of your subconscious. Focus your intent, and let the DreamWeaver guide your nocturnal journey.
+        What wisdom or vision do you seek tonight?
+        </div>
+        """, unsafe_allow_html=True)
+
+        intention_text = st.text_area("🌌 My Dream Intention:", height=100, placeholder="e.g., 'Clarity on my path,' 'Connection with my inner guide,' 'A dream of healing.'")
+
+        if st.button("🌙 Set Intention & Seek Guidance"):
+            if not intention_text.strip():
+                st.warning("You must voice an intention to the void.")
+            else:
+                with st.spinner("Weaving your intention into the dream ether..."):
+                    incubation_prompt = f"""
+You are Somnus, the Weaver of Intentions, an ancient and gentle dream oracle.
+The dreamer wishes to focus their subconscious on the following intention before sleep:
+'{intention_text}'
+
+Craft a short (2-4 sentences), mystical, and soothing affirmation or pre-sleep meditation focus point to help them carry this intention into their dreams.
+Use imagery of stars, gentle darkness, the subconscious mind, and the liminal space between worlds.
+Your tone should be comforting, profound, and slightly hypnotic.
+Example: 'As twilight deepens, let your intention be a single star guiding your journey through the velvet void. Trust the whispers of your inner sanctum to illuminate the path as you drift into the cosmic sea.'
+"""
+                    affirmation_response = model.generate_content(incubation_prompt)
+                    affirmation_text = affirmation_response.text
+                    st.session_state.current_intention_details = {"text": intention_text, "affirmation": affirmation_text}
+
+        if st.session_state.current_intention_details:
+            st.markdown("### ✨ Your Woven Intention")
+            st.markdown(f"""
+            <div class='dream-box' style='background: linear-gradient(145deg, #25083d, #43256b); border-color: #7348aa;'>
+                <p style='color: #c18fff;'><b>Your Intention:</b> {st.session_state.current_intention_details['text']}</p>
+                <hr style='background: linear-gradient(90deg, #25083d00, #7348aa, #25083d00);'>
+                <p style='color: #f5e8ff;'><i>{st.session_state.current_intention_details['affirmation']}</i></p>
+                <p style='font-size: 0.9em; color: #9a71c1; text-align: center; margin-top: 15px;'>
+                Carry this thought as you drift to sleep. May your dreams bring clarity.
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+
     with tab2:
         st.markdown("## 🔮 Tarot Guidance")
         st.markdown("""
@@ -996,11 +1069,14 @@ Use a poetic, cryptic tone with cosmic and occult imagery.
         
         with col2:
             # Average lucidity score
-            avg_lucidity = st.session_state.lucidity_score if len(st.session_state.dream_log) == 1 else 1
+            lucidity_value = "N/A"
+            if st.session_state.dream_log: # If there's at least one dream
+                # st.session_state.lucidity_score holds the score of the last interpreted dream
+                lucidity_value = st.session_state.lucidity_score
             st.markdown(f"""
             <div class="dream-stat">
-                <h3>🧿 Lucidity Level</h3>
-                <p>{avg_lucidity}/10</p>
+                <h3>🧿 Last Dream Lucidity</h3>
+                <p>{lucidity_value}{'/10' if isinstance(lucidity_value, int) else ''}</p>
             </div>
             """, unsafe_allow_html=True)
         
